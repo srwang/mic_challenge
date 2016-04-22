@@ -1,0 +1,49 @@
+<DOCTYPE html>
+<head>
+	<title>PolicyMic</title>
+	<link href='http://localhost:3000/css/main.css' rel='stylesheet' type='text/css'>
+</head>
+<body>
+	<table class="table" id="policymic-forum">
+		<tr>
+			<th>Unpublished Articles (<%=number%>)</th>
+			<th>Author</th> 
+			<th>Words</th>
+			<th>Submitted</th>
+		</tr>
+<!-- 		loop over articles  -->
+		<%for (var i=0; i<=10; i++){%>
+			<tr>
+				<td><div id="article-img" style="background-image:url('<%=articles[i].image%>');"></div><%=articles[i].title%></td>
+				<td><%=articles[i].profile.first_name%> <%=articles[i].profile.last_name%></td>
+				<td><%=articles[i].words%></td>
+<!-- 				calc diff between current date-time and published date-time -->
+				<%var pubDate = new Date(articles[i].publish_at);%>
+				<%var diff = new Date() - pubDate;%>
+<!-- 				calc time to display -->
+				<%var time;%>
+				<%var timeUnit;%>
+
+				<%function checkTimeUnit(millsec, limit, unit){%>
+					<%if(Math.round(diff/millsec) < limit){%>
+						<%time = Math.round(diff/millsec);%>
+						<%timeUnit = unit;%>
+						<%return%>
+					<%}%>
+				<%};%>
+
+				<%checkTimeUnit(60000, 60, "minute");%>
+				<%checkTimeUnit(3600000, 24, "hour");%>
+				<%checkTimeUnit(86400000, 365, "day");%>
+				<%checkTimeUnit(31536000000, Infinity, "year");%>
+
+				<%if (time > 1){%>
+					<%timeUnit = timeUnit + "s";%>
+				<%}%>
+
+<!-- 				render time -->
+				<td><%=time%> <%=timeUnit%> ago</td>
+			</tr>	
+		<%}%>
+	</table>
+</body>

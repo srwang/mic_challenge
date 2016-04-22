@@ -1,0 +1,8 @@
+#article-img {
+	height: 50px;
+	width: 50px;
+	border: 1px solid black;
+	background-size: cover;
+	background-position: center;
+	background-repeat: none;
+}
