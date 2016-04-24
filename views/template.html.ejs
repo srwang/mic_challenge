@@ -1,0 +1,44 @@
+<!-- 		loop over articles -->
+<%for (var i=0; i<articles.length; i++){%>
+	<%console.log(i)%>
+<!-- 				set so only ten articles are visible initially -->
+	<%if(i>9){%>
+		<%var displaySetting = "none";%>
+		<%var displayClass = "article-hidden";%>
+	<%} else {%>
+		<%var displaySetting = "table-row";%>
+		<%var displayClass = "article-visible";%>
+	<%}%>
+<!-- 				create rows -->
+	<tr class="pending-article-row <%=displayClass%>" style="display:<%=displaySetting%>;">
+		<td><div class="article-img" style="background-image:url('<%=articles[i].image%>');"></div><%=articles[i].title%></td>
+		<td><%=articles[i].profile.first_name%> <%=articles[i].profile.last_name%></td>
+		<td><%=articles[i].words%></td>
+<!-- 				display submission time -->
+<!-- 				calc diff between current date-time and submit date-time -->
+		<%var pubDate = new Date(articles[i].publish_at);%>
+		<%var diff = new Date() - pubDate;%>
+<!-- 				calc time unit to display-->
+		<%var time;%>
+		<%var timeUnit;%>
+
+		<%function checkTimeUnit(millsec, limit, unit){%>
+			<%if(Math.round(diff/millsec) < limit){%>
+				<%time = Math.round(diff/millsec);%>
+				<%timeUnit = unit;%>
+				<%return%>
+			<%}%>
+		<%};%>
+
+		<%checkTimeUnit(60000, 60, "minute");%>
+		<%checkTimeUnit(3600000, 24, "hour");%>
+		<%checkTimeUnit(86400000, 365, "day");%>
+		<%checkTimeUnit(31536000000, Infinity, "year");%>
+
+		<%if (time > 1){%>
+			<%timeUnit = timeUnit + "s";%>
+		<%}%>
+<!-- 				render time -->
+		<td><%=time%> <%=timeUnit%> ago</td>
+	</tr>	
+<%}%>

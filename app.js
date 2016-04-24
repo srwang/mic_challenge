@@ -28,13 +28,24 @@ app.get('/', function (req, res) {
 	}
 });
 
-//create view
-//populate with articles.json - up to ten
+// app.put('/', function(req, res) {
+
+// 	res.render('index.html.ejs', {articles: more-articles});
+// });
+
+//make request from server-side, append one by one (but have to duplicate template)
+//make request from client-side, pass in as "more-articles" (hidden template on index.html)
+//keep the javascript for the template in a separate file, pull it in using "require"
+
+
 //load more button
 //make call to more-articles
 //two sorts
+//change the number on "unpublished articles"
 
 //refactor and add comments
+//css
+//break down into partials
 
 app.get('*', function(req, res, next) {
   var err = new Error();
