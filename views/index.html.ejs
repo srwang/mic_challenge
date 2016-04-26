@@ -1,8 +1,9 @@
 <DOCTYPE html>
 <head>
 	<title>PolicyMic</title>
-	<link href="http://localhost:3000/css/main.css" rel="stylesheet" type="text/css">
+	<link href="/css/main.css" rel="stylesheet" type="text/css">
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-beta1/jquery.min.js"></script>
+	<script src="http://localhost:3000/js/ejs.min.js"></script>
 </head>
 <body>
 <!-- 	TABLE -->
@@ -10,21 +11,21 @@
 		<tr>
 			<th>Unpublished Articles (<%=number%>)</th>
 			<th>Author</th> 
-			<th>Words</th>
-			<th>Submitted</th>
+			<th>
+				<form id="sortby-words" action="/sort" method="POST">
+					<button>Words</button>
+				</form>
+			</th>
+			<th>
+				<form id="sortby-submit" action="/sort" method="POST">
+					<button>Submitted</button>
+				</form>
+			</th>
 		</tr>
-		<%include template.html.ejs%>
+		<%include ../public/templates/table.html.ejs%>
 	</table>
-<!-- 	extra results -->
-
-
 
 <!-- 	LOAD MORE BUTTON -->
 	<button id="load-more">Load More</button>
 	<script src="http://localhost:3000/js/main.js"></script>
 </body>
-
-
-<!-- populate all rows
-create a "hidden" style for everything above 10
-each time you click "load more", get rid of the hidden styling -->

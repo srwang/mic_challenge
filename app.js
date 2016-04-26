@@ -5,47 +5,88 @@ var ejs = require('ejs');
 var bodyParser = require('body-parser');
 var urlencodedBodyParser = bodyParser.urlencoded({extended: false});
 var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
-var xhr = new XMLHttpRequest();
+var cookieParser = require('cookie-parser');
+var _ = require('underscore');
+var index = 0;
+var sort;
 
+app.use(cookieParser());
 app.use(urlencodedBodyParser);
 app.set('view_engine', 'ejs');
 app.use(express.static('public'));
 
-//root page
-app.get('/', function (req, res) {
+//check for stored sort preference
+function checkSort (req) {
+	if (req.cookies.sort) {
+		sort = req.cookies.sort;
+	} else {
+		sort = 'submit-time';
+	}
+}
+
+//logic to grab json data
+function grabData (url, callback) {
 	//send xhr to simulated backend
-	xhr.open('GET', 'http://localhost:3000/data/articles.json', true);
+	var xhr = new XMLHttpRequest();
+	xhr.open('GET', url, true);
 	xhr.send();
 	xhr.onreadystatechange = processRequest;
 
 	function processRequest(e) {
 		if (xhr.readyState == 4 && xhr.status == 200) {
-	        var response = JSON.parse(xhr.responseText);
+			var response = JSON.parse(xhr.responseText);
 
-	        //render view using json data
-	        res.render('index.html.ejs', {number: 10, articles: response}); //CHANGE NUM
-    	}
+			//sort with stored preference, defaults to submit-time
+			if (sort === 'words') {
+				response = _.sortBy(response, 'words').reverse();
+			} else if (sort === 'submit-time') {
+				response = _.sortBy(response, 'publish_at').reverse();
+			}
+			//decide what to do with response data
+			callback(response);
+		}
 	}
+}
+
+//prepopulate root page with articles.json
+app.get('/', function (req, res) {
+	checkSort(req);
+
+	grabData('http://localhost:3000/data/articles.json', function (response){
+		
+		grabData('http://localhost:3000/data/more-articles.json', function (moreResponse){
+			var sumArticles = response.length + moreResponse.length;
+
+			//render view using json data
+			res.render('index.html.ejs', {number: sumArticles, articles: response}); 
+		});
+	});	
 });
 
-// app.put('/', function(req, res) {
+//front-end will make request to this route to grab more-articles.json
+app.get('/loadmorearticles', function (req, res) {
+	checkSort(req);
 
-// 	res.render('index.html.ejs', {articles: more-articles});
-// });
+	grabData('http://localhost:3000/data/more-articles.json', function (response) {
+		if (index <= response.length) {
+			//send data to client-side in groups of 10
+			response = response.splice(index, 10);
+			res.send({articles: response});
 
-//make request from server-side, append one by one (but have to duplicate template)
-//make request from client-side, pass in as "more-articles" (hidden template on index.html)
-//keep the javascript for the template in a separate file, pull it in using "require"
+			index += 10; 	        	
+		}
+	});
+});
 
+//front-end will store sort cookie
+app.post('/sort', function (req, res) {
+	res.redirect('/');
+})
 
-//load more button
-//make call to more-articles
-//two sorts
-//change the number on "unpublished articles"
-
-//refactor and add comments
+//debug hidden
 //css
-//break down into partials
+
+//figure out how to retain loads with sort?
 
 app.get('*', function(req, res, next) {
   var err = new Error();

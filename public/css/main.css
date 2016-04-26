@@ -6,3 +6,7 @@
 	background-position: center;
 	background-repeat: none;
 }
+
+.sort-option:hover {
+	cursor: pointer;
+}
