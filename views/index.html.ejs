@@ -1,6 +1,7 @@
 <DOCTYPE html>
 <head>
 	<title>PolicyMic</title>
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.1.1/normalize.min.css" rel="stylesheet" type="text/css">
 	<link href="/css/main.css" rel="stylesheet" type="text/css">
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-beta1/jquery.min.js"></script>
 	<script src="http://localhost:3000/js/ejs.min.js"></script>
@@ -8,17 +9,17 @@
 <body>
 <!-- 	TABLE -->
 	<table class="table" id="policymic-forum">
-		<tr>
-			<th>Unpublished Articles (<%=number%>)</th>
-			<th>Author</th> 
+		<tr id="table-titles">
+			<th class="article-title">UNPUBLISHED ARTICLES (<%=number%>)</th>
+			<th class="article-author">AUTHOR</th> 
 			<th>
-				<form id="sortby-words" action="/sort" method="POST">
-					<button>Words</button>
+				<form class="article-words" id="sortby-words" action="/sort" method="POST">
+					<button>WORDS</button>
 				</form>
 			</th>
 			<th>
-				<form id="sortby-submit" action="/sort" method="POST">
-					<button>Submitted</button>
+				<form class="article-submit-time" id="sortby-submit" action="/sort" method="POST">
+					<button>SUBMITTED</button>
 				</form>
 			</th>
 		</tr>
@@ -34,11 +35,6 @@
 				<%include ../public/templates/table.html.ejs%>
 			</tbody>
 		<%}%>
-
-<!-- 		make block of ten articles
-		have them "unhide" by ten
-		make template for each article
-		when passing ejs from frontend, create loops on frontend -->
 	</table>
 
 <!-- 	LOAD MORE BUTTON -->

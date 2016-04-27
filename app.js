@@ -84,7 +84,7 @@ app.post('/sort', function (req, res) {
 	res.redirect('/');
 })
 
-//css
+//debug ejs
 //figure out how to retain loads with sort?
 
 app.get('*', function(req, res, next) {

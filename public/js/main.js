@@ -21,6 +21,7 @@ $(document).ready(function(){
 				$.get('/loadmorearticles', function (res) {
 		           //pass response into template
 		           var html = temp(res);
+		           console.log(html)
 		           $('#policymic-forum').append(html);
 		        });
 
