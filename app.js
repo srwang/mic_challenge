@@ -70,7 +70,7 @@ app.get('/loadmorearticles', function (req, res) {
 			//send data to client-side in groups of 10
 			response = response.splice(index, 10);
 			//'art' variable used in table.html.ejs
-			res.send({art: response});
+			res.status(200).send({art: response});
 
 			index += 10; 	        	
 		}
