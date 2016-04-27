@@ -22,7 +22,23 @@
 				</form>
 			</th>
 		</tr>
-		<%include ../public/templates/table.html.ejs%>
+<!-- 		display rows in groups of ten, with first one visible-->
+		<tbody class="ten-rows visible-rows">
+			<%var art = articles.splice(0, 10);%>
+			<%include ../public/templates/table.html.ejs%>
+		</tbody>
+		<%var groupLength = Math.ceil(articles.length/10);%>
+		<%for (var a=1; a<=groupLength; a++) {%> 
+			<tbody class="ten-rows hidden-rows" style="display:none;">
+				<%var art = articles.splice(0, 10);%>
+				<%include ../public/templates/table.html.ejs%>
+			</tbody>
+		<%}%>
+
+<!-- 		make block of ten articles
+		have them "unhide" by ten
+		make template for each article
+		when passing ejs from frontend, create loops on frontend -->
 	</table>
 
 <!-- 	LOAD MORE BUTTON -->

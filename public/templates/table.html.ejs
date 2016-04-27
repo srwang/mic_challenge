@@ -1,21 +1,13 @@
 <!-- 		loop over articles -->
-<%for (var i=0; i<articles.length; i++){%>
-<!-- 				set so only ten articles are visible initially -->
-	<%if(i>9){%>
-		<%var displaySetting = "none";%>
-		<%var displayClass = "article-hidden";%>
-	<%} else {%>
-		<%var displaySetting = "table-row";%>
-		<%var displayClass = "article-visible";%>
-	<%}%>
+<%for (var i=0; i<art.length; i++){%>
 <!-- 				create rows -->
-	<tr class="pending-article-row <%=displayClass%>" style="display:<%=displaySetting%>;">
-		<td><div class="article-img" style="background-image:url('<%=articles[i].image%>');"></div><%=articles[i].title%></td>
-		<td><%=articles[i].profile.first_name%> <%=articles[i].profile.last_name%></td>
-		<td><%=articles[i].words%></td>
+	<tr class="pending-article-row">
+		<td><div class="article-img" style="background-image:url('<%=art[i].image%>');"></div><%=art[i].title%></td>
+		<td><%=art[i].profile.first_name%> <%=art[i].profile.last_name%></td>
+		<td><%=art[i].words%></td>
 <!-- 				display submission time -->
 <!-- 				calc diff between current date-time and submit date-time -->
-		<%var pubDate = new Date(articles[i].publish_at);%>
+		<%var pubDate = new Date(art[i].publish_at);%>
 		<%var diff = new Date() - pubDate;%>
 <!-- 				calc time unit to display-->
 		<%var time;%>

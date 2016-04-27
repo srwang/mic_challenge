@@ -71,7 +71,8 @@ app.get('/loadmorearticles', function (req, res) {
 		if (index <= response.length) {
 			//send data to client-side in groups of 10
 			response = response.splice(index, 10);
-			res.send({articles: response});
+			//'art' variable used in table.html.ejs
+			res.send({art: response});
 
 			index += 10; 	        	
 		}
@@ -83,9 +84,7 @@ app.post('/sort', function (req, res) {
 	res.redirect('/');
 })
 
-//debug hidden
 //css
-
 //figure out how to retain loads with sort?
 
 app.get('*', function(req, res, next) {

@@ -2,25 +2,16 @@ $(document).ready(function(){
 	console.log('linked');
 
 	$('#load-more').click(function(){
-		// if hidden article rows exist on the page, load them by 10
-		console.log($('.article-hidden'));
-		if($('.article-hidden').length > 0) {
-			for(var i=0; i<10; i++) {
-				
-				(function () {
-					if($('.article-hidden')[i]) {
-						var article = $('.article-hidden')[i];
+		// if hidden article exist on the page, load the first group
+		if($('.hidden-rows')[0]) {
 
-						console.log(i, article);
+			var rows = $('.hidden-rows')[0];
 
-						article.style.display = "table-row";
-						article.classList.remove('article-hidden');
-						article.classList.add('article-visible');				
-					} else {
-						return
-					}
-				})(i); 
-			}
+			console.log(rows);
+
+			rows.style.display = 'table-row-group';
+			rows.classList.remove('hidden-rows');
+			rows.classList.add('visible-rows');								
 		//else make call to more-articles.json, append to dom	
 		} else {
 			//grab ejs template
