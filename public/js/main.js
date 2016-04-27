@@ -33,4 +33,5 @@ $(document).ready(function(){
 	$('#sortby-submit').click(function(){
 		document.cookie = "sort=submit-time";
 	});
+
 });

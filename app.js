@@ -6,6 +6,7 @@ var bodyParser = require('body-parser');
 var urlencodedBodyParser = bodyParser.urlencoded({extended: false});
 var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 var cookieParser = require('cookie-parser');
+var fs = require('fs');
 var _ = require('underscore');
 var index = 0;
 var sort;
@@ -26,39 +27,31 @@ function checkSort (req) {
 
 //logic to grab json data
 function grabData (url, callback) {
-	//send xhr to simulated backend
-	var xhr = new XMLHttpRequest();
-	xhr.open('GET', url, true);
-	xhr.send();
-	xhr.onreadystatechange = processRequest;
 
-	function processRequest(e) {
-		if (xhr.readyState == 4 && xhr.status == 200) {
-			var response = JSON.parse(xhr.responseText);
-
-			//sort with stored preference, defaults to submit-time
-			if (sort === 'words') {
-				response = _.sortBy(response, 'words').reverse();
-			} else if (sort === 'submit-time') {
-				response = _.sortBy(response, 'publish_at').reverse();
-			}
-			//decide what to do with response data
-			callback(response);
+	fs.readFile(url, 'utf8', function(err, response){
+		if (err) {
+			console.log(err);
 		}
-	}
 
-	setTimeout(function() {
-		xhr.abort();
-	}, 1000);
+		response = JSON.parse(response);
+		//sort with stored preference, defaults to submit-time
+		if (sort === 'words') {
+			response = _.sortBy(response, 'words').reverse();
+		} else if (sort === 'submit-time') {
+			response = _.sortBy(response, 'publish_at').reverse();
+		}
+		//decide what to do with response data
+		callback(response);
+	});
 }
 
 //prepopulate root page with articles.json
 app.get('/', function (req, res) {
 	checkSort(req);
 
-	grabData('http://localhost:3000/data/articles.json', function (response){
+	grabData('data/articles.json', function (response){
 		
-		grabData('http://localhost:3000/data/more-articles.json', function (moreResponse){
+		grabData('data/more-articles.json', function (moreResponse){
 			var sumArticles = response.length + moreResponse.length;
 
 			//render view using json data
@@ -72,7 +65,7 @@ app.get('/', function (req, res) {
 app.get('/loadmorearticles', function (req, res) {
 	checkSort(req);
 
-	grabData('http://localhost:3000/data/more-articles.json', function (response) {
+	grabData('data/more-articles.json', function (response) {
 		if (index <= response.length) {
 			//send data to client-side in groups of 10
 			response = response.splice(index, 10);
@@ -89,9 +82,6 @@ app.post('/sort', function (req, res) {
 	res.redirect('/');
 })
 
-//two solutions:
-//figure out how to check and abort existing xhr
-//sort without hitting a new route (or adding to xhr)
 
 app.get('*', function(req, res, next) {
   var err = new Error();
