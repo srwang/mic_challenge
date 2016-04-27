@@ -54,7 +54,7 @@ tr:nth-child(even) {
 }
 
 #table-titles th {
-	font-size: 12px;
+	font-size: 11px;
 	color: white;
 	border: 1px solid rgb(144,40,40);
 	box-shadow: inset 5px -29px 50px -14px #854646;
@@ -68,6 +68,7 @@ tr:nth-child(even) {
 	border: none;
 	padding: none;
 	color: white;
+	font-size: 11px;
 	cursor: pointer;
 	position: relative;
 	top: 6px;

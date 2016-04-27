@@ -46,6 +46,10 @@ function grabData (url, callback) {
 			callback(response);
 		}
 	}
+
+	setTimeout(function() {
+		xhr.abort();
+	}, 1000);
 }
 
 //prepopulate root page with articles.json
@@ -61,6 +65,7 @@ app.get('/', function (req, res) {
 			res.render('index.html.ejs', {number: sumArticles, articles: response}); 
 		});
 	});	
+
 });
 
 //front-end will make request to this route to grab more-articles.json
@@ -84,8 +89,9 @@ app.post('/sort', function (req, res) {
 	res.redirect('/');
 })
 
-//debug ejs
-//figure out how to retain loads with sort?
+//two solutions:
+//figure out how to check and abort existing xhr
+//sort without hitting a new route (or adding to xhr)
 
 app.get('*', function(req, res, next) {
   var err = new Error();
